@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Project {
+  id                  String   @id @default(uuid())
+  name_project        String   @unique
+  date_create_project DateTime
+  description         String
+  linkrepo            String
+  executiontime       Int
+  difficulty          Int
+  img                 String
+  gif                 String
+
+
+  technologys Technology[]
+  @@map("projects")
+}
+
+model Technology_Create {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  img         String
+  technologys Technology[]
+
+  @@map("technogys")
+}
+
+model Technology {
+  id String @id @default(uuid())
+
+  id_project String
+  project    Project @relation(fields: [id_project], references: [id])
+
+  id_technology String
+  technology    Technology_Create @relation(fields: [id_technology], references: [id])
+
+}
+
+model Skill {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String
+  ability     Int
+  goodhabits  Int
+  experience  Int
+
+  @@map("skills")
+}
